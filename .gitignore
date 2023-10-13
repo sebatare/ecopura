@@ -8,9 +8,12 @@
 # testing
 /coverage
 
-# production
-/build
+/env
+#cache python
 
+*__init__.py
+*migrations
+*__pycache__
 # misc
 .DS_Store
 .env.local
