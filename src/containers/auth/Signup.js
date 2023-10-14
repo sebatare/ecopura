@@ -1,52 +1,22 @@
-import Layout from './../../hocs/Layout.js';
-import { Link } from 'react-router-dom'
-import { login } from '../../redux/actions/auth'
-import { ColorRing } from 'react-loader-spinner'
+import Layout from "../../hocs/Layout";
+import { Link } from "react-router-dom";
 import { connect } from 'react-redux';
-import { useState, useEffect } from 'react'
-import { Navigate } from 'react-router'
-const Login = ({
-    login,
+import { ColorRing } from 'react-loader-spinner'
+const Signup = ({
     loading
 }) => {
-    useEffect(() => {
-        window.scrollTo(0, 0)
-    }, [])
-
-    const [formData, setFormData] = useState({
-        email: '',
-        password: '',
-    })
-    const [activated, setActivated] = useState(false);
-
-    const {
-        email,
-        password,
-    } = formData;
-
-
-    const onChange = e => setFormData({ ...formData, [e.target.name]: e.target.value });
-
-    const onSubmit = e => {
-        e.preventDefault();
-        login(email, password);
-        setActivated(true);
-        window.scrollTo(0, 0);
-    }
-    if (activated)
-    return <Navigate to='/' />;
 
     return (
         <Layout>
             <div className="flex min-h-full max-w-md mx-auto flex-1 flex-col px-6 lg:px-8  rounded-md my-20 bg-blue-300 bg-opacity-10">
                 <div className="sm:mx-auto sm:w-full sm:max-w-sm">
                     <h2 className="mt-10 text-center text-2xl font-bold leading-9 tracking-tight text-gray-900">
-                        Iniciar Sesión Ecopura
+                        Crear cuenta
                     </h2>
                 </div>
 
                 <div className="mt-10 sm:mx-auto sm:w-full sm:max-w-sm">
-                    <form on onSubmit={e => onSubmit(e)} className="space-y-6">
+                    <form  className="space-y-6">
                         <div>
                             <label htmlFor="email" className="block text-sm font-medium leading-6 text-gray-900">
                                 Correo
@@ -56,8 +26,7 @@ const Login = ({
                                     id="email"
                                     name="email"
                                     type="email"
-                                    value={email}
-                                    onChange={e => onChange(e)}
+                                    
                                     autoComplete="email"
                                     required
                                     className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
@@ -82,8 +51,8 @@ const Login = ({
                                     name="password"
                                     type="password"
                                     autoComplete="current-password"
-                                    value={password}
-                                    onChange={e => onChange(e)}
+                                    
+                                    
                                     required
                                     className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
                                 />
@@ -122,6 +91,7 @@ const Login = ({
                 </div>
             </div>
         </Layout>
+
     );
 }
 const mapStateToProps = state => ({
@@ -129,5 +99,5 @@ const mapStateToProps = state => ({
 })
 
 export default connect(mapStateToProps, {
-    login
-})(Login)
+    
+})(Signup)

@@ -246,7 +246,7 @@ export const check_authenticated = () => async dispatch => {
     }
 }
 
-//ESTA FUNCION ME PERMITE TENER LA INICIAR INCIADA AL REFRESCAR LA PAGINA, QUE SON UTILIZADAS EN EN LAYOUT
+//ESTA FUNCION ME PERMITE TENER LA SESION INCIADA AL REFRESCAR LA PAGINA, QUE SON UTILIZADAS EN EN LAYOUT
 export const refresh = () => async dispatch => {
     if (localStorage.getItem('refresh')) {
         const config = {

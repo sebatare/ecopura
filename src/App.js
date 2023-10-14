@@ -4,7 +4,7 @@ import { Provider } from 'react-redux';
 import store from './store';
 import Home from './containers/pages/home/Home';
 import Login from './containers/auth/Login';
-
+import Signup from './containers/auth/Signup';
 function App() {
   return (
     <Provider store={store}>
@@ -12,6 +12,7 @@ function App() {
         <Routes>
           <Route exact path='/' element={<Home/>}/>
           <Route exact path='/login' element={<Login/>}/>
+          <Route exact path='/signup' element={<Signup/>}/>
         </Routes>
       </Router>
     </Provider>
