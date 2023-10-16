@@ -28,7 +28,7 @@ import axios from 'axios'
 //FUNCION QUE NOS PERMITE REGISTRARNOS CON REDUX USANDO EL ENDOPOINT DE JWT
 //USANDO AXIOS VAMOS A LLAMAR A LA API ENPOINT JWT
 //USAMOS HEADER Y CONTENT-TYPE IGUAL QUE POSTMAN
-export const signup = (first_name, last_name, email, password, re_password) => async dispatch => {
+export const signup = (first_name, last_name, email,phone, password, re_password) => async dispatch => {
     //APENAS LE DAMOS CLICK EN EL BOTON, VAMOS ALTIRO A CARGAR.
     dispatch({
         type: SET_AUTH_LOADING,
@@ -43,6 +43,7 @@ export const signup = (first_name, last_name, email, password, re_password) => a
         first_name,
         last_name,
         email,
+        phone,
         password,
         re_password
     });
@@ -292,6 +293,7 @@ export const logout = () => dispatch => {
     });
     dispatch(setAlert('Cierre de sesion correcto', 'green'));
 }
+
 export const reset_password = (email) => async dispatch => {
     dispatch({
         type: SET_AUTH_LOADING

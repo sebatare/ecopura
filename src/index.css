@@ -3,6 +3,7 @@
 @tailwind utilities;
 
 
+
 .navnar__menu_items_mobile{
     @apply hover:underline hover:underline-offset-4 py-2 rounded-md font-semibold text-blue-900;
 }

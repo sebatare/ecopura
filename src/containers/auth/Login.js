@@ -46,7 +46,7 @@ const Login = ({
                 </div>
 
                 <div className="mt-10 sm:mx-auto sm:w-full sm:max-w-sm">
-                    <form on onSubmit={e => onSubmit(e)} className="space-y-6">
+                    <form onSubmit={e => onSubmit(e)} className="space-y-6">
                         <div>
                             <label htmlFor="email" className="block text-sm font-medium leading-6 text-gray-900">
                                 Correo
