@@ -11,11 +11,12 @@ class ListCategoriesView(APIView):
     permission_classes = (permissions.AllowAny, )
 
     def get(self, request, format=None):
+        #Hay un problema con este get, no puedo obtener al 3er hijo de un padre.
         if Category.objects.all().exists():
             categories = Category.objects.all()
 
             result = []
-
+            
             for category in categories:
                 if not category.parent:
                     item = {}
@@ -32,6 +33,7 @@ class ListCategoriesView(APIView):
 
                             item['sub_categories'].append(sub_item)
                     result.append(item)
+            
             return Response({'categories': result}, status=status.HTTP_200_OK)
         else:
             return Response({'error': 'No categories found'}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)

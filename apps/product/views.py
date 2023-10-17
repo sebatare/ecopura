@@ -39,7 +39,7 @@ class ListProductsView(APIView):
         sortBy = request.query_params.get('sortBy')
 
         if not (sortBy == 'date_created' or sortBy == 'price' or sortBy == 'sold' or sortBy == 'name'):
-            sortBy = 'date_created'
+            sortBy = 'name'
         
         order = request.query_params.get('order')
         limit = request.query_params.get('limit')
@@ -260,20 +260,20 @@ class ListBySearchView(APIView):
                         category__in=filtered_categories)
 
         # Filtrar por precio
-        if price_range == '1 - 4990':
+        if price_range == '$1 - $4.990':
             product_results = product_results.filter(price__gte=1)
-            product_results = product_results.filter(price__lt=20)
-        elif price_range == '5000 - 9990':
-            product_results = product_results.filter(price__gte=20)
-            product_results = product_results.filter(price__lt=40)
-        elif price_range == '10000 - 14990':
-            product_results = product_results.filter(price__gte=40)
-            product_results = product_results.filter(price__lt=60)
-        elif price_range == '15000- 19990':
-            product_results = product_results.filter(price__gte=60)
-            product_results = product_results.filter(price__lt=80)
-        elif price_range == 'More than 20000':
-            product_results = product_results.filter(price__gte=80)
+            product_results = product_results.filter(price__lt=4990)
+        elif price_range == '$5.000 - $9.990':
+            product_results = product_results.filter(price__gte=5000)
+            product_results = product_results.filter(price__lt=9900)
+        elif price_range == '$10.000 - $14.990':
+            product_results = product_results.filter(price__gte=10000)
+            product_results = product_results.filter(price__lt=14990)
+        elif price_range == '$15.000- $19.990':
+            product_results = product_results.filter(price__gte=15000)
+            product_results = product_results.filter(price__lt=19990)
+        elif price_range == 'Más de $20.000':
+            product_results = product_results.filter(price__gte=20000)
         
         #Filtrar producto por sort_by
         if order == 'desc':
