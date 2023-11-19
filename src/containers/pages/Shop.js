@@ -1,12 +1,12 @@
 import Layout from "../../hocs/Layout"
 import { connect } from "react-redux"
-import { get_products, get_filtered_products, get_search_products} from '../../redux/actions/products'
+import { get_products, get_filtered_products, get_search_products } from '../../redux/actions/products'
 import ProductCard from "./product/ProductCard"
 import { get_categories } from "../../redux/actions/categories"
 import { Fragment, useState, useEffect } from 'react'
 import { Dialog, Transition } from '@headlessui/react'
 import { XMarkIcon } from '@heroicons/react/24/outline'
-import { FunnelIcon} from '@heroicons/react/20/solid'
+import { FunnelIcon } from '@heroicons/react/20/solid'
 import { prices } from '../../helpers/fixedPrices'
 
 
@@ -18,7 +18,8 @@ const Shop = ({
     filtered_products,
     get_categories,
     categories,
-    get_search_products
+    get_search_products,
+    search_products
 }) => {
 
     useEffect(() => {
@@ -27,12 +28,18 @@ const Shop = ({
         window.scrollTo(0, 0)
     }, [])
     const [filtered, setFiltered] = useState(false)
+    const [searched, setSearched] = useState(false)
     const [formData, setFormData] = useState({
         category_id: '0',
         price_range: 'Todo',
         sortBy: 'created',
         order: 'asc'
     })
+
+    const [searchData, setSearchData] = useState({
+        category_id: '0',
+        search: ''
+    });
 
 
     const {
@@ -41,27 +48,42 @@ const Shop = ({
         sortBy,
         order
     } = formData
+
+    const {
+        scategory_id,
+        search
+    } = searchData
+
     const onChange = e => setFormData({ ...formData, [e.target.name]: e.target.value })
+    const onChangeSearch = e => setSearchData({ ...searchData, [e.target.name]: e.target.value })
 
     const onSubmit = e => {
         e.preventDefault()
         get_filtered_products(category_id, price_range, sortBy, order)
         setFiltered(true)
     }
-    const [searchData, setSearchData] = useState({
-        category_id: 0,
-        search: ''
-      });
+
 
     const onSearch = e => {
         e.preventDefault()
-        get_search_products(searchData, category_id)
+        get_search_products(search, scategory_id)
+        setSearched(true)
     }
 
 
     const showProducts = () => {
-        const productsToMap = filtered ? filtered_products : products;
+        //const productsToMap = filtered ? filtered_products : products
+        let productsToMap = 'null';
+        if (filtered) {
+            productsToMap = filtered_products
+        } else if (searched) {
+            productsToMap = search_products
+        } else {
+            productsToMap = products
+        }
+
         if (!productsToMap) return null;
+        console.log(productsToMap)
         return (
             <div className='rounded-md sm:grid grid-cols-3 gap-6'>
                 {productsToMap.map((product, index) => (
@@ -216,7 +238,7 @@ const Shop = ({
 
                                             </div>
 
-                                            <button onClick={onSubmit} className="text-xl px-3 py-1 bg-blue-950 text-white font-semibold rounded-md mx-2">Buscar</button>
+                                            <button onClick={onSubmit} onChange={e => onChangeSearch(e)} className="text-xl px-3 py-1 bg-blue-950 text-white font-semibold rounded-md mx-2">Buscar</button>
                                         </form>
                                     </Dialog.Panel>
                                 </Transition.Child>
@@ -227,25 +249,24 @@ const Shop = ({
                     <main className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
                         <div className="sm:flex justify-between">
                             <h1 className="text-4xl font-bold tracking-tight text-gray-900 my-auto">Productos</h1>
-                            <form className="pt-6 w-full max-w-[700px] md:pl-36 md:pr-10">
-                                <label for="default-search" className="mb-2 text-sm font-medium text-gray-900 sr-only dark:text-white">Search</label>
+                            <form className="pt-6 w-full max-w-[700px] md:pl-36 md:pr-10">                              
                                 <div className="relative flex">
                                     <div className="absolute inset-y-0 left-0 flex items-center pl-3 pointer-events-none">
                                         <svg className="w-4 text-gray-500 dark:text-gray-400" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 20 20">
                                             <path stroke="currentColor" strokeLinecap="round" strokeLinejoin="round" stroke-width="2" d="m19 19-4-4m0-7A7 7 0 1 1 1 8a7 7 0 0 1 14 0Z" />
                                         </svg>
                                     </div>
-                                    <input  onChange={e=>onChange(e)} type="search" id="default-search" className="block w-full px-2 py-3 pl-10 text-sm text-gray-900 border border-gray-300 rounded-lg bg-gray-50 focus:ring-blue-500  dark:placeholder-gray-400 dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="Buscar producto..." required />
-                                    <button onClick={onSearch} type="text" className="text-center text-white absolute h-full right-0 bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-4 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">Ir</button>
+                                    <input onChange={e => onChangeSearch(e)} name="search" value={search} type="text" id="default-search" className="block w-full px-2 py-3 pl-10 text-sm text-gray-900 border border-gray-300 rounded-lg bg-gray-50 focus:ring-blue-500  dark:placeholder-gray-400 dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="Buscar producto..." required />
+                                    <button onClick={e => onSearch(e)} type="button" className="text-center text-white absolute h-full right-0 bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-4 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">Ir</button>
                                 </div>
                             </form>
                             <div className="sm:flex">
                                 <div className="sm:flex">
-                                    <div className='form-group mr-3'>
+                                    <div className='form-group'>
                                         <label htmlFor='sortBy' className='mr-3 min-w-0 flex-1 text-gray-500'
                                         >Ver por</label>
                                         <select
-                                            className='my-2 font-sofiapro-light inline-flex justify-center w-full rounded-md border border-gray-300 shadow-sm px-4 py-2 bg-white text-sm font-medium text-gray-700 hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-offset-gray-100 focus:ring-blue-500'
+                                            className='my-2 font-sofiapro-light inline-flex justify-center w-full rounded-md border border-gray-300 shadow-sm px-4 py-2 bg-white text-sm font-medium text-gray-700 hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-offset-gray-100 focus:ring-blue-500 md:-ml-2'
                                             id='sortBy'
                                             name='sortBy'
                                             onChange={e => onChange(e)}
@@ -279,7 +300,7 @@ const Shop = ({
                                 <div className="flex mt-2">
                                     <button
                                         type="button"
-                                        className="flex -m-2 ml-1 border-[1px] sm:border-0 border-gray-300 rounded-md p-2 text-gray-400 hover:text-gray-500 sm:ml-6 lg:hidden"
+                                        className="flex -m-2 ml-1 border-[1px] sm:border-0 border-gray-300 rounded-md p-2 text-gray-400 hover:text-gray-500 lg:hidden"
                                         onClick={() => setMobileFiltersOpen(true)}
 
                                     >
@@ -438,7 +459,8 @@ const mapStateToProps = state => ({
 
     products: state.Products.products,
     categories: state.Categories.categories,
-    filtered_products: state.Products.filtered_products
+    filtered_products: state.Products.filtered_products,
+    search_products: state.Products.search_products
 })
 
 
@@ -446,6 +468,7 @@ export default connect(mapStateToProps, {
     get_products,
     get_categories,
     get_filtered_products,
-    get_search_products
+    get_search_products,
+
 })(Shop)
 

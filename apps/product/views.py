@@ -83,7 +83,7 @@ class ListSearchView(APIView):
         data = self.request.data
 
         try:
-            category_id = int(data['category_id'])
+            category_id = int(data['scategory_id'])
         except:
             return Response(
                 {'error': 'Category ID must be an integer'},
@@ -217,7 +217,7 @@ class ListBySearchView(APIView):
 
     def post(self, request, format=None):
         data = self.request.data
-
+        print(data)
         try:
             category_id = int(data['category_id'])
         except:
