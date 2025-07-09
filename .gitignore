@@ -4,12 +4,10 @@
 /node_modules
 /.pnp
 .pnp.js
+/media/*
 
-# testing
-/coverage
-
-/env
 #cache python
+env
 
 *__init__.py
 *migrations
