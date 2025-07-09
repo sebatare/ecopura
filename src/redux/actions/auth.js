@@ -397,3 +397,4 @@ export const reset_password_confirm = (uid, token, new_password, re_new_password
         }
     }
 }
+
